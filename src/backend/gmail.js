@@ -1,7 +1,7 @@
 var userProperties = PropertiesService.getUserProperties(); // This is to allow retrieval of stored info
 
+// Sends all emails that are scheduled to be sent 15 minutes from now or sooner
 function sendScheduledEmails() {
-    // Sends all emails that are scheduled to be sent 15 minutes from now or sooner
     var scheduledEmails = JSON.parse(userProperties.getProperty('scheduledData'));
     var nowPlus15 = Date.parse(new Date()) + (15 * 60 * 1000); /// 15 minutes extra may not be nessicary
     // Email use a 15 minute buffer because Google's Scheduling is not percise
@@ -13,6 +13,8 @@ function sendScheduledEmails() {
             sendEmailBySubject(email.subject);
         }
     }
+  
+    // Import draft messages
     function sendEmailBySubject(subject) {
         var drafts = GmailApp.getDraftMessages();
         try {
@@ -32,6 +34,7 @@ function sendScheduledEmails() {
         updateTriggers();
     }
 }
+
 function getScheduledEmails() {
     //Returns parsed email schedule
     var data = userProperties.getProperty('scheduledData');
